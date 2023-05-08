@@ -22,6 +22,7 @@ const state: Unvalidated = {
 };
 
 const validate = (args: Unvalidated): Result<Validated, Error> => {
+  // Math.randomにより50%の確率でエラーを返す
   if (args.value === undefined) {
     return err(new Error("value should be defined"));
   }
@@ -52,8 +53,9 @@ try {
   console.log(result);
 } catch (error) {
   if (error instanceof Error) {
-    console.error(error.message);
-    console.info("=== stack ===");
-    console.info(error.stack);
+    console.error(`Error: ${error.message}`);
+    if (error.cause instanceof Error) {
+      console.error(`cause: ${error.cause.message}`);
+    }
   }
 }
